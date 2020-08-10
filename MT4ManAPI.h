@@ -20,7 +20,7 @@ namespace MetaQuotes {
 #include "MT4ManagerAPI.h"
 }
 #include "Definitions.h"
-namespace Manager {
+namespace MT4Manager {
 		public delegate int ProgressFunc(int pos, int max, String ^Message);
 		public delegate int UpdateFuncNotif(int login, String ^Group1, String ^Group2, String ^status1, String ^status2);
 
@@ -67,10 +67,13 @@ namespace Manager {
 				WSAStartup(0x0202, &wsa);
 
 				CStringA newPath(path);
-				int fpos = newPath.ReverseFind('\\');
-
-				if (fpos != -1)
-					newPath = newPath.Left(fpos + 1);
+				//int fpos = newPath.ReverseFind('\\');
+				//
+				//if (fpos != -1)
+				//	newPath = newPath.Left(fpos + 1);
+				if (newPath.Right(1).Compare("\\") != 0) {
+					newPath += "\\";
+				}
 
 #ifndef _WIN64
 				newPath += "mtmanapi.dll";
@@ -93,7 +96,7 @@ namespace Manager {
 		};
 
 
-		public ref class MeTatraderManager : public IDisposable {
+		public ref class MetaTraderManager : public IDisposable {
 		private:
 			MetaQuotes::CManagerInterface *m_manager;		
 			GCHandle gch;
@@ -106,12 +109,12 @@ namespace Manager {
 
 		public:
 
-			MeTatraderManager()
+			MetaTraderManager()
 			{
 				CManagerFactory fact;
 				m_manager = fact.Create();
 			}
-			MeTatraderManager(String ^dir)
+			MetaTraderManager(String ^dir)
 			{
 				char *_dir = (char *)(void *)Marshal::StringToHGlobalAnsi(dir);
 				CManagerFactory fact(_dir);
@@ -120,7 +123,7 @@ namespace Manager {
 				Marshal::FreeHGlobal(IntPtr((void *)_dir));
 
 			}
-			virtual ~MeTatraderManager()
+			virtual ~MetaTraderManager()
 			{
 				try {
 					if (gch.IsAllocated) {
@@ -146,6 +149,13 @@ namespace Manager {
 				const int icode = (int)code;
 				char *text = (char *)m_manager->ErrorDescription(icode);
 				return Marshal::PtrToStringAnsi(IntPtr(text));
+			}
+
+			void WorkingDirectory(String ^dir)
+			{
+				char* _dir = (char*)(void*)Marshal::StringToHGlobalAnsi(dir);
+				m_manager->WorkingDirectory(_dir);
+				Marshal::FreeHGlobal(IntPtr((void*)_dir));
 			}
 
 			//--- connection

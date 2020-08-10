@@ -67,7 +67,7 @@ namespace Helpers {
 }
 
 
-namespace Manager {
+namespace MT4Manager {
 	
 //+------------------------------------------------------------------+
 //|                   Server Configurations                          |

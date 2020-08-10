@@ -11,7 +11,7 @@ This solution was created to help users with .net experience use the latest API 
 1) Definitions.h:
      * MetaQuotes: Wrapper over "MT4ManagerAPI.h"
      * Helpers: Includes Helper class used as a setter/getter for mails,new topics and plugin parameters.
-     * Manager: Includes all data types defined in MT4ManagerAPI.h
+     * MT4Manager: Includes all data types defined in MT4ManagerAPI.h
 
 2) MT4ManAPI.h:
 
@@ -24,10 +24,10 @@ The solution creates a class library (MT4Manager.dll) that can be included in .n
 # Simple Example
 ```
 // Include namespace
-using Manager;
+using MT4Manager;
 
-// Create MeTatraderManager instance 
-MeTatraderManager mt4=new MeTatraderManager();
+// Create MetaTraderManager instance 
+MetaTraderManager mt4=new MetaTraderManager();
 
 // Use connect function similar to how it is used in MT4ManagerAPI.h
 mt4.Connect("127.0.0.1:443");
@@ -35,4 +35,21 @@ mt4.Login(1, "manager");
 
 // Use Extended Pumping Switch
 mt4.PumpingSwitchEx(CBFunc,(int)PumpingFlags.CLIENT_FLAGS_HIDETICKS|(int)PumpingFlags.CLIENT_FLAGS_HIDEONLINE,0);
+```
+
+# Python.NET Example
+```
+import sys
+import clr
+
+DLL_DIR = 'X:\\my-app\\dll-dir'
+sys.path.append(DLL_DIR)
+clr.AddReference('MT4Manager')
+from MT4Manager import MetaTraderManager
+
+mt4 = MetaTraderManager(DLL_DIR)
+res = mt4.Connect("127.0.0.1:443")
+print('connect', res)
+res = mt4.Login(1, "password")
+print('login', res)
 ```
