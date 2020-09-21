@@ -151,6 +151,13 @@ namespace MT4Manager {
 				return Marshal::PtrToStringAnsi(IntPtr(text));
 			}
 
+			String^ ErrorDescription(int code)
+			{
+				const int icode = code;
+				char* text = (char*)m_manager->ErrorDescription(icode);
+				return Marshal::PtrToStringAnsi(IntPtr(text));
+			}
+
 			void WorkingDirectory(String ^dir)
 			{
 				char* _dir = (char*)(void*)Marshal::StringToHGlobalAnsi(dir);
@@ -2253,8 +2260,8 @@ namespace MT4Manager {
 			//--- notifications
 			RetValues NotificationsSend( String^ metaquotes_ids, String^ message)
 			{
-				wchar_t *metaquotesids=(wchar_t *)(void *)Marshal::StringToHGlobalAnsi(metaquotes_ids);
-				wchar_t *_message = (wchar_t *)(void *)Marshal::StringToHGlobalAnsi(message);
+				wchar_t *metaquotesids=(wchar_t *)(void *)Marshal::StringToHGlobalUni(metaquotes_ids);
+				wchar_t *_message = (wchar_t *)(void *)Marshal::StringToHGlobalUni(message);
 				int res=m_manager->NotificationsSend(metaquotesids, _message);
 				Marshal::FreeHGlobal(IntPtr((void *)metaquotesids));
 				Marshal::FreeHGlobal(IntPtr((void *)_message));
@@ -2271,7 +2278,7 @@ namespace MT4Manager {
 				{
 					usr[i] = logins[i];
 				}
-				wchar_t *_message = (wchar_t *)(void *)Marshal::StringToHGlobalAnsi(message);
+				wchar_t *_message = (wchar_t *)(void *)Marshal::StringToHGlobalUni(message);
 				int res= m_manager->NotificationsSend(usr, logins_total, _message);
 				delete[] usr;
 				Marshal::FreeHGlobal(IntPtr((void *)_message));
