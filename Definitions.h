@@ -3298,6 +3298,7 @@ public:
 		leverage = ur.leverage;
 		agent_account = ur.agent_account;
 		timestamp = ur.timestamp;
+		last_ip = ur.last_ip;
 
 		balance = ur.balance;
 		prevmonthbalance = ur.prevmonthbalance;
@@ -3347,6 +3348,7 @@ public:
 		leverage = ur->leverage;
 		agent_account = ur->agent_account;
 		timestamp = ur->timestamp;
+		last_ip = ur->last_ip;
 
 		balance = ur->balance;
 		prevmonthbalance = ur->prevmonthbalance;
@@ -3486,6 +3488,7 @@ public:
 		ur->leverage = leverage;
 		ur->agent_account = agent_account;
 		ur->timestamp = timestamp;
+		ur->last_ip = last_ip;
 
 		ur->balance = balance;
 		ur->prevmonthbalance = prevmonthbalance;
@@ -3540,7 +3543,7 @@ public:
 	int leverage; // leverage
 	int agent_account;      // agent account
 	__time32_t  timestamp;
-	int reserved; // for future use
+	int last_ip;  // last visit ip
 				  // trade data
 	double balance;  // balance
 	double prevmonthbalance;    // previous month balance
